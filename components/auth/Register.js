@@ -1,13 +1,15 @@
 import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import Link from "next/link";
-import Router from "next/router";
+import Router, { withRouter } from "next/router";
+import * as yup from "yup";
 
 const FormItem = Form.Item;
 
 class C extends React.PureComponent {
   state = {
-    isLoading: false
+    isLoading: false,
+    confirmDirty: false
   };
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.errors && Object.keys(nextProps.errors).length) {
@@ -23,10 +25,49 @@ class C extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        this.props.registerUser(values, this.props.router);
+      } else {
+        this.setState({ isLoading: false });
       }
     });
   };
+
+  handleConfirmBlur = e => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  };
+
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFieldsAndScroll(["repassword"], { force: true });
+    }
+    callback();
+  };
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue("password")) {
+      callback("Two passwords that you enter is inconsistent!");
+    } else {
+      callback();
+    }
+  };
+
+  validateToUsername = (rule, value, callback) => {
+    const schema = yup
+      .string()
+      .min(4)
+      .max(40);
+    if (value) {
+      schema.validate(value).catch(err => {
+        callback("Your name shoud be between 4 to 40 characters!");
+      });
+    } else {
+      callback();
+    }
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -44,12 +85,14 @@ class C extends React.PureComponent {
           </p>
         </div>
 
-        <FormItem
-          validateStatus={errors && errors.name ? "error" : ""}
-          help={errors.name ? errors.name : undefined}
-        >
+        <FormItem help={errors.name ? errors.name : undefined}>
           {getFieldDecorator("name", {
-            rules: [{ required: true, message: "Please input your name!" }]
+            rules: [
+              { required: true, message: "Please input your Name!" },
+              {
+                validator: this.validateToUsername
+              }
+            ]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -57,12 +100,15 @@ class C extends React.PureComponent {
             />
           )}
         </FormItem>
-        <FormItem
-          validateStatus={errors && errors.email ? "error" : ""}
-          help={errors.email ? errors.email : undefined}
-        >
+        <FormItem help={errors.email ? errors.email : undefined}>
           {getFieldDecorator("email", {
-            rules: [{ required: true, message: "Please input your email!" }]
+            rules: [
+              {
+                type: "email",
+                message: "The input is not valid E-mail!"
+              },
+              { required: true, message: "Please input your email!" }
+            ]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -70,12 +116,14 @@ class C extends React.PureComponent {
             />
           )}
         </FormItem>
-        <FormItem
-          validateStatus={errors && errors.password ? "error" : ""}
-          help={errors.password ? errors.password : undefined}
-        >
+        <FormItem help={errors.password ? errors.password : undefined}>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
+            rules: [
+              { required: true, message: "Please input your Password!" },
+              {
+                validator: this.validateToNextPassword
+              }
+            ]
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -84,18 +132,20 @@ class C extends React.PureComponent {
             />
           )}
         </FormItem>
-        <FormItem
-          validateStatus={errors && errors.repassword ? "error" : ""}
-          help={errors.repassword ? errors.repassword : undefined}
-        >
+        <FormItem help={errors.repassword ? errors.repassword : undefined}>
           {getFieldDecorator("repassword", {
             rules: [
-              { required: true, message: "Please confirm your password!" }
+              { required: true, message: "Please confirm your password!" },
+              {
+                validator: this.compareToFirstPassword
+              }
             ]
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              type="password"
               placeholder="Confirm your password"
+              onBlur={this.handleConfirmBlur}
             />
           )}
         </FormItem>
@@ -121,4 +171,4 @@ class C extends React.PureComponent {
 
 const RegisterForm = Form.create()(C);
 
-export default RegisterForm;
+export default withRouter(RegisterForm);

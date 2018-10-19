@@ -18,7 +18,7 @@ class AppLayout extends Component {
   render() {
     const { auth, logoutUser } = this.props;
     return (
-      <Layout style={{ height: "100vh" }}>
+      <Layout style={{ height: "100vh" }} className="ant-layout-has-sider">
         <Sider collapsed={this.state.collapsed} />
         <Layout>
           <Header

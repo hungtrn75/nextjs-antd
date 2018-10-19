@@ -1,23 +1,15 @@
 import React, { PureComponent } from "react";
 import RegisterForm from "../components/auth/Register";
 import { connect } from "react-redux";
-import { loginUser } from "../modules/auth/actions";
+import { registerUser } from "../modules/auth/actions";
 import { redirectIfSignedIn } from "../utils/AuthService";
-import Router from "next/router";
 
 class Register extends PureComponent {
-  state = {};
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps && Object.keys(nextProps.auth.user).length) {
-      Router.push("/");
-    }
-    return null;
-  }
   render() {
-    const { auth, errors, loginUser } = this.props;
+    const { auth, errors, registerUser } = this.props;
     return (
       <div className="login-form">
-        <RegisterForm auth={auth} errors={errors} loginUser={loginUser} />
+        <RegisterForm auth={auth} errors={errors} registerUser={registerUser} />
       </div>
     );
   }
@@ -31,6 +23,6 @@ const mapStateToProps = state => ({
 export default redirectIfSignedIn(
   connect(
     mapStateToProps,
-    { loginUser }
+    { registerUser }
   )(Register)
 );

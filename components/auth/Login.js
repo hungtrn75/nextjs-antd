@@ -24,9 +24,12 @@ class C extends React.PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.loginUser(values);
+      } else {
+        this.setState({ isLoading: false });
       }
     });
   };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -49,11 +52,20 @@ class C extends React.PureComponent {
           help={errors.email ? errors.email : undefined}
         >
           {getFieldDecorator("email", {
-            rules: [{ required: true, message: "Please input your username!" }]
+            rules: [
+              {
+                type: "email",
+                message: "The input is not valid E-mail!"
+              },
+              {
+                required: true,
+                message: "Please input your E-mail!"
+              }
+            ]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
+              placeholder="Email"
             />
           )}
         </FormItem>
@@ -62,7 +74,12 @@ class C extends React.PureComponent {
           help={errors.password ? errors.password : undefined}
         >
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
+            rules: [
+              { required: true, message: "Please input your Password!" },
+              {
+                validator: this.validateToNextPassword
+              }
+            ]
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
