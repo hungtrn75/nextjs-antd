@@ -8,6 +8,7 @@ import {
   removeCookie
 } from "./utils/auth";
 import jwt_decode from "jwt-decode";
+import { setAuthToken } from "./utils/auth";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -30,6 +31,8 @@ function configureStore(
         : getCookieFromBrowser("jwtToken");
       if (auth) {
         try {
+          //Set auth token
+          setAuthToken(auth);
           //Decode user token
           const decoded = jwt_decode(auth);
           const currentTime = Date.now() / 1000;

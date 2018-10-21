@@ -54,21 +54,6 @@ function deleteCommentApi(comment_id, post_id) {
   });
 }
 
-function registerUserApi(userData) {
-  return axios.request({
-    url: `${url}/users/register`,
-    method: "post",
-    data: userData
-  });
-}
-
-function loginUserApi(userData) {
-  return axios.request({
-    url: `${url}/users/login`,
-    method: "post",
-    data: userData
-  });
-}
 //PROFILE
 function getCurrentProfileApi() {
   return axios.request({

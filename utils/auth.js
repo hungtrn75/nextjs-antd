@@ -10,6 +10,12 @@ export const setCookie = (key, value) => {
   }
 };
 
+export const getCookie = (key, req) => {
+  return process.browser
+    ? getCookieFromBrowser(key)
+    : getCookieFromServer(key, req);
+};
+
 export const removeCookie = key => {
   if (process.browser) {
     cookie.remove(key, {

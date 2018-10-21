@@ -7,14 +7,15 @@ import {
 } from "./types";
 import { GET_ERRORS } from "../errors/types";
 import { take, takeLatest, put, call } from "redux-saga/effects";
-import { Api } from "../../utils/Api";
 import jwt_decode from "jwt-decode";
 import { ADD_ALERT } from "../alert/types";
 import { setCookie, setAuthToken, removeCookie } from "../../utils/auth";
+import { Auth } from "../../constants/ApiRequests.js";
+import API from "../../utils/apiV2";
 
 function* loginUserWorker(action) {
   try {
-    const res = yield call(Api.loginUserApi, action.payload);
+    const res = yield call(API.post, `${Auth.LOGIN}`, action.payload);
     const { token } = res.data;
     //Save to cookie
     setCookie("jwtToken", token);
@@ -68,7 +69,7 @@ export function* watchLogoutUser() {
 
 function* registerUserWorker(action) {
   try {
-    yield call(Api.registerUserApi, action.payload.userData);
+    yield call(API.post, `${Auth.REGISTER}`, action.payload.userData);
     yield call(action.payload.history.push, "/login");
     // yield put({
     //   type: ADD_ALERT,

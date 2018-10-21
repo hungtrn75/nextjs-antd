@@ -26,7 +26,6 @@ class C extends React.PureComponent {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         this.props.registerUser(values, this.props.router);
       } else {
         this.setState({ isLoading: false });

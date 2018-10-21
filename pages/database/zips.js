@@ -13,7 +13,7 @@ class ZipPage extends React.Component {
   };
 
   static async getInitialProps({ ctx }) {
-    const stores = await ctx.store.dispatch(getZips(1, 20));
+    const stores = await ctx.store.dispatch(getZips(1, 50));
 
     return { stores };
   }
