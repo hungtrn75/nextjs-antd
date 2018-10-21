@@ -1,7 +1,7 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Form, Icon, Button, Input, Checkbox } from "antd";
 import Link from "next/link";
-import Router from "next/router";
+import Router, { withRouter } from "next/router";
 
 const FormItem = Form.Item;
 
@@ -114,4 +114,4 @@ class C extends React.PureComponent {
 
 const LoginForm = Form.create()(C);
 
-export default LoginForm;
+export default withRouter(LoginForm);

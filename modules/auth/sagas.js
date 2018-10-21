@@ -6,32 +6,11 @@ import {
   CLEAR_CURRENT_PROFILE
 } from "./types";
 import { GET_ERRORS } from "../errors/types";
-import { takeLatest, put, call, take } from "redux-saga/effects";
+import { take, takeLatest, put, call } from "redux-saga/effects";
 import { Api } from "../../utils/Api";
 import jwt_decode from "jwt-decode";
 import { ADD_ALERT } from "../alert/types";
 import { setCookie, setAuthToken, removeCookie } from "../../utils/auth";
-
-function* registerUserWorker(action) {
-  try {
-    yield call(Api.registerUserApi, action.payload.userData);
-    yield call(action.payload.history.push, "/login");
-    yield put({
-      type: ADD_ALERT,
-      payload: { text: "Register successfull", status: "success" }
-    });
-  } catch (error) {
-    yield put({ type: GET_ERRORS, payload: error.response.data });
-    yield put({
-      type: ADD_ALERT,
-      payload: { text: "Register failed", status: "error" }
-    });
-  }
-}
-
-export function* watchRegisterUser() {
-  yield takeLatest(REGISTER_USER, registerUserWorker);
-}
 
 function* loginUserWorker(action) {
   try {
@@ -63,12 +42,12 @@ export function* watchLoginUser() {
 
 function* logoutUserWorker() {
   try {
+    //Set isAuthenticated to false and remove user
+    yield put({ type: SET_CURRENT_USER, payload: {} });
     //Remove token from cookie
     removeCookie("jwtToken");
     //Remove auth header for future requests
     setAuthToken(false);
-    //Set isAuthenticated to false and remove user
-    yield put({ type: SET_CURRENT_USER, payload: {} });
     // yield put({ type: CLEAR_CURRENT_PROFILE });
     // yield put({
     //   type: ADD_ALERT,
@@ -85,4 +64,26 @@ function* logoutUserWorker() {
 
 export function* watchLogoutUser() {
   yield takeLatest(LOGOUT_USER, logoutUserWorker);
+}
+
+function* registerUserWorker(action) {
+  try {
+    yield call(Api.registerUserApi, action.payload.userData);
+    yield call(action.payload.history.push, "/login");
+    // yield put({
+    //   type: ADD_ALERT,
+    //   payload: { text: "Register successfull", status: "success" }
+    // });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: GET_ERRORS, payload: error.response.data });
+    // yield put({
+    //   type: ADD_ALERT,
+    //   payload: { text: "Register failed", status: "error" }
+    // });
+  }
+}
+
+export function* watchRegisterUser() {
+  yield takeLatest(REGISTER_USER, registerUserWorker);
 }

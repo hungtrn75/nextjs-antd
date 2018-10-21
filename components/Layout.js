@@ -18,7 +18,7 @@ class AppLayout extends Component {
   render() {
     const { auth, logoutUser } = this.props;
     return (
-      <Layout style={{ height: "100vh" }} className="ant-layout-has-sider">
+      <Layout hasSider style={{ minHeight: "100vh" }}>
         <Sider collapsed={this.state.collapsed} />
         <Layout>
           <Header
@@ -27,8 +27,15 @@ class AppLayout extends Component {
             auth={auth}
             logoutUser={logoutUser}
           />
-
-          <Layout.Content>{this.props.children}</Layout.Content>
+          <Layout.Content
+            style={{
+              margin: "24px 16px",
+              padding: 24,
+              background: "#fff"
+            }}
+          >
+            {this.props.children}
+          </Layout.Content>
         </Layout>
       </Layout>
     );

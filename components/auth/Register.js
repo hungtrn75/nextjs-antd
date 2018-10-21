@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Form, Icon, Button, Input, Checkbox } from "antd";
 import Link from "next/link";
 import Router, { withRouter } from "next/router";
 import * as yup from "yup";
@@ -21,10 +21,12 @@ class C extends React.PureComponent {
     }
     return null;
   }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        console.log(values);
         this.props.registerUser(values, this.props.router);
       } else {
         this.setState({ isLoading: false });
@@ -63,8 +65,6 @@ class C extends React.PureComponent {
       schema.validate(value).catch(err => {
         callback("Your name shoud be between 4 to 40 characters!");
       });
-    } else {
-      callback();
     }
   };
 
@@ -88,10 +88,10 @@ class C extends React.PureComponent {
         <FormItem help={errors.name ? errors.name : undefined}>
           {getFieldDecorator("name", {
             rules: [
-              { required: true, message: "Please input your Name!" },
-              {
-                validator: this.validateToUsername
-              }
+              { required: true, message: "Please input your Name!" }
+              // {
+              //   validator: this.validateToUsername
+              // }
             ]
           })(
             <Input
@@ -154,8 +154,6 @@ class C extends React.PureComponent {
             type="primary"
             htmlType="submit"
             className="login-form-button"
-            loading={this.state.isLoading}
-            onClick={() => this.setState({ isLoading: true })}
           >
             Sign up
           </Button>

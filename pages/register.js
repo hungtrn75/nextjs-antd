@@ -5,6 +5,9 @@ import { registerUser } from "../modules/auth/actions";
 import { redirectIfSignedIn } from "../utils/AuthService";
 
 class Register extends PureComponent {
+  static async getInitialProps(ctx) {
+    await ctx.store.dispatch({ type: "CLEAR_ERRORS" });
+  }
   render() {
     const { auth, errors, registerUser } = this.props;
     return (

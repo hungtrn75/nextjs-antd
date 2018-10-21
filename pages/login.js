@@ -5,6 +5,9 @@ import { loginUser } from "../modules/auth/actions";
 import { redirectIfSignedIn } from "../utils/AuthService";
 
 class Login extends PureComponent {
+  static async getInitialProps(ctx) {
+    await ctx.store.dispatch({ type: "CLEAR_ERRORS" });
+  }
   render() {
     const { auth, errors, loginUser } = this.props;
     return (

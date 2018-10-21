@@ -8,12 +8,13 @@ export const loginUser = userData => ({
 
 //Logout user
 export const logoutUser = () => {
-  console.log("logiut");
   return { type: LOGOUT_USER };
 };
 
 //Register user
-export const registerUser = (userData, history) => ({
-  type: REGISTER_USER,
-  payload: { userData, history }
-});
+export const registerUser = (userData, history) => {
+  return {
+    type: REGISTER_USER,
+    payload: { userData, history }
+  };
+};

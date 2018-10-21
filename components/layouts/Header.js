@@ -7,7 +7,7 @@ export default class Header extends PureComponent {
   state = {};
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.auth && !nextProps.auth.isAuthenticated) {
-      Router.push("/");
+      Router.push("/login");
     }
     return null;
   }

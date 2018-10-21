@@ -6,7 +6,7 @@
       "import",
       {
         "libraryName": "antd",
-        "style": true
+        "style": "less"
       }
     ],
     ["inline-react-svg"]
