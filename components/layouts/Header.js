@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Spin, Tag, Menu, Icon, Dropdown, Avatar, Tooltip, Layout } from "antd";
+import { Menu, Icon, Dropdown, Avatar, Layout } from "antd";
 import "./index.less";
 import Router from "next/router";
 
@@ -7,7 +7,7 @@ export default class Header extends PureComponent {
   state = {};
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.auth && !nextProps.auth.isAuthenticated) {
-      Router.push("/login");
+      if (!nextProps.isServer) Router.push("/login");
     }
     return null;
   }
@@ -46,19 +46,21 @@ export default class Header extends PureComponent {
           type={this.props.collapsed ? "menu-unfold" : "menu-fold"}
           onClick={() => this.props.toggle()}
         />
-        <div className="right">
-          <Dropdown overlay={menu}>
-            <span className="action account">
-              <Avatar
-                size="small"
-                className="avatar"
-                alt="avatar"
-                src={user.avatar}
-              />
-              <span className="name">{user.name}</span>
-            </span>
-          </Dropdown>
-        </div>
+        {user && (
+          <div className="right">
+            <Dropdown overlay={menu}>
+              <span className="action account">
+                <Avatar
+                  size="small"
+                  className="avatar"
+                  alt="avatar"
+                  src={user.avatar}
+                />
+                <span className="name">{user.name}</span>
+              </span>
+            </Dropdown>
+          </div>
+        )}
       </Layout.Header>
     );
   }

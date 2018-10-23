@@ -12,7 +12,7 @@ class ZipPage extends React.Component {
     isLoading: false
   };
 
-  static async getInitialProps({ ctx }) {
+  static async getInitialProps({ ctx, isServer }) {
     const stores = await ctx.store.dispatch(getZips(1, 50));
 
     return { stores };

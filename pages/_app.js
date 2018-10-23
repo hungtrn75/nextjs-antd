@@ -9,19 +9,19 @@ import Layout from "../components/Layout";
 import createStore from "../store";
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
+  static async getInitialProps({ Component, ctx, isServer }) {
     let pageProps = {};
     let { pathname } = ctx;
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps({ ctx });
+      pageProps = await Component.getInitialProps({ ctx, isServer });
     }
 
-    return { pageProps, pathname };
+    return { pageProps, pathname, isServer };
   }
 
   render() {
-    const { Component, pageProps, store, pathname } = this.props;
+    const { Component, pageProps, store, pathname, isServer } = this.props;
     return (
       <Container>
         <Provider store={store}>
@@ -30,7 +30,7 @@ class MyApp extends App {
           ) : pathname === "/register" ? (
             <Component {...pageProps} />
           ) : (
-            <Layout>
+            <Layout isServer={isServer}>
               <Component {...pageProps} />
             </Layout>
           )}

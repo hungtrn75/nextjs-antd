@@ -146,8 +146,6 @@ export const Api = {
   deletePostApi,
   addLikeApi,
   removeLikeApi,
-  registerUserApi,
-  loginUserApi,
   getCurrentProfileApi,
   getProfilesApi,
   getProfileByHandleApi,

@@ -4,6 +4,7 @@ import Sider from "./layouts/Sider";
 import { Layout } from "antd";
 import { connect } from "react-redux";
 import { logoutUser } from "../modules/auth/actions";
+import ProgressBar from "react-progress-bar-plus";
 
 class AppLayout extends Component {
   state = {
@@ -16,34 +17,42 @@ class AppLayout extends Component {
     });
   };
   render() {
-    const { auth, logoutUser } = this.props;
+    const { auth, logoutUser, loadingBar, isServer } = this.props;
     return (
-      <Layout hasSider style={{ minHeight: "100vh" }}>
-        <Sider collapsed={this.state.collapsed} />
-        <Layout>
-          <Header
-            toggle={this.toggle}
-            collapsed={this.state.collapsed}
-            auth={auth}
-            logoutUser={logoutUser}
+      <>
+        <Layout hasSider style={{ minHeight: "100vh", zIndex: 9 }}>
+          <ProgressBar
+            percent={loadingBar}
+            spinner={loadingBar === 0 || loadingBar === 100 ? false : "right"}
           />
-          <Layout.Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              background: "#fff"
-            }}
-          >
-            {this.props.children}
-          </Layout.Content>
+          <Sider collapsed={this.state.collapsed} />
+          <Layout>
+            <Header
+              toggle={this.toggle}
+              collapsed={this.state.collapsed}
+              auth={auth}
+              logoutUser={logoutUser}
+              isServer={isServer}
+            />
+            <Layout.Content
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                background: "#fff"
+              }}
+            >
+              {this.props.children}
+            </Layout.Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  loadingBar: state.loadingBar
 });
 
 export default connect(

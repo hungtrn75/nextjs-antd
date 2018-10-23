@@ -13,6 +13,7 @@ if (typeof require !== "undefined") {
 }
 
 module.exports = withLess({
+  // cssModules: true,
   lessLoaderOptions: {
     javascriptEnabled: true,
     modifyVars: {
@@ -26,10 +27,7 @@ module.exports = withLess({
 
     config.plugins = [
       ...config.plugins,
-      new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
-      }),
+
       // Read the .env file
       new Dotenv({
         path: path.join(__dirname, ".env"),
@@ -37,21 +35,24 @@ module.exports = withLess({
       })
     ];
     // config.module.rules.push({
-    //   test: /\.css$/,
+    //   test: /\.(css|less)$/,
+    //   exclude: /antd.*\.(css|less)$/,
     //   use: [
     //     {
-    //       loader: MiniCssExtractPlugin.loader
+    //       loader: "style-loader" // creates style nodes from JS strings
     //     },
     //     {
     //       loader: "css-loader",
     //       options: {
     //         modules: true,
-    //         sourceMap: true
-    //       }
+    //         localIdentName: "[path][name]__[local]--[hash:base64:5]"
+    //       } // translates CSS into CommonJS
+    //     },
+    //     {
+    //       loader: "less-loader" // compiles Less to CSS
     //     }
     //   ]
     // });
-
     return config;
   }
 });
