@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
-import { loadingBarMiddleware } from "react-redux-loading-bar";
 import { rootReducer, rootSaga } from "./modules";
 import {
   getCookieFromBrowser,

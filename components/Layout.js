@@ -5,11 +5,19 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 import { logoutUser } from "../modules/auth/actions";
 import ProgressBar from "react-progress-bar-plus";
+import { withRouter } from "next/router";
 
 class AppLayout extends Component {
   state = {
     collapsed: false
   };
+
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.auth && !nextProps.auth.isAuthenticated) {
+      nextProps.router.push("/login");
+    }
+    return null;
+  }
 
   toggle = () => {
     this.setState({
@@ -21,10 +29,10 @@ class AppLayout extends Component {
     return (
       <>
         <Layout hasSider style={{ minHeight: "100vh", zIndex: 9 }}>
-          <ProgressBar
+          {/* <ProgressBar
             percent={loadingBar}
             spinner={loadingBar === 0 || loadingBar === 100 ? false : "right"}
-          />
+          /> */}
           <Sider collapsed={this.state.collapsed} />
           <Layout>
             <Header
@@ -55,7 +63,9 @@ const mapStateToProps = state => ({
   loadingBar: state.loadingBar
 });
 
-export default connect(
-  mapStateToProps,
-  { logoutUser }
-)(AppLayout);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { logoutUser }
+  )(AppLayout)
+);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Icon, Button, Input, Checkbox } from "antd";
 import Link from "next/link";
-import Router, { withRouter } from "next/router";
+import { withRouter } from "next/router";
 import * as yup from "yup";
 
 const FormItem = Form.Item;
@@ -16,7 +16,7 @@ class C extends React.PureComponent {
       return { isLoading: false };
     }
     if (nextProps.auth && nextProps.auth.isAuthenticated) {
-      Router.push("/");
+      nextProps.router.push("/");
       return { isLoading: false };
     }
     return null;

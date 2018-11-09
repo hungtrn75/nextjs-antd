@@ -1,4 +1,5 @@
 import Router from "next/router";
+import { getCurrentUser } from "../modules/auth/actions";
 
 export const requireSignedIn = (Page, to = "/login") => {
   return class extends React.PureComponent {
@@ -10,6 +11,8 @@ export const requireSignedIn = (Page, to = "/login") => {
         } else {
           ctx.res.redirect(to);
         }
+      } else {
+        ctx.store.dispatch(getCurrentUser());
       }
       if (Page.getInitialProps) return Page.getInitialProps(ctx);
     }

@@ -5,12 +5,7 @@ import Router from "next/router";
 
 export default class Header extends PureComponent {
   state = {};
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.auth && !nextProps.auth.isAuthenticated) {
-      if (!nextProps.isServer) Router.push("/login");
-    }
-    return null;
-  }
+
   onLogoutUser = () => {
     this.props.logoutUser();
   };

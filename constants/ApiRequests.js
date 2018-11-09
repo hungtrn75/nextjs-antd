@@ -11,7 +11,7 @@ const Post = {
 const Auth = {
   REGISTER: "/users/register",
   LOGIN: "/users/login",
-  REFRESH: "/users/refresh"
+  CURRENT: "/users/current"
 };
 
 module.exports = {

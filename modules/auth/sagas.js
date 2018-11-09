@@ -3,7 +3,7 @@ import {
   SET_CURRENT_USER,
   LOGIN_USER,
   LOGOUT_USER,
-  CLEAR_CURRENT_PROFILE
+  GET_CURRENT_USER
 } from "./types";
 import { GET_ERRORS } from "../errors/types";
 import { takeLatest, put, call } from "redux-saga/effects";
@@ -93,4 +93,18 @@ function* registerUserWorker(action) {
 
 export function* watchRegisterUser() {
   yield takeLatest(REGISTER_USER, registerUserWorker);
+}
+
+function* getCurrentUser() {
+  try {
+    const res = yield call(API.get, `${Auth.CURRENT}`);
+    yield put({ type: SET_CURRENT_USER, payload: res.data || {} });
+  } catch (error) {
+    yield put({ type: SET_CURRENT_USER, payload: {} });
+    yield put({ type: GET_ERRORS, payload: error });
+  }
+}
+
+export function* watchGetCurrentUser() {
+  yield takeLatest(GET_CURRENT_USER, getCurrentUser);
 }

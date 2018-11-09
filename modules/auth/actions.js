@@ -1,4 +1,9 @@
-import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "./types";
+import {
+  LOGIN_USER,
+  LOGOUT_USER,
+  REGISTER_USER,
+  GET_CURRENT_USER
+} from "./types";
 
 //Login user - Set User token
 export const loginUser = userData => ({
@@ -18,3 +23,8 @@ export const registerUser = (userData, history) => {
     payload: { userData, history }
   };
 };
+
+//Get current user
+export const getCurrentUser = () => ({
+  type: GET_CURRENT_USER
+});
