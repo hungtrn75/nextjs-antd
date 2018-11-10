@@ -1,6 +1,7 @@
 # Nextjs with redux, redux-saga, ant design project
 The project is based on the purpose of ssr with nextjs 
-[![Build Status](https://github.com/zeit/next.js)](https://github.com/zeit/next.js)
+
+[![Build Status](https://travis-ci.org/zeit/next.js.svg?branch=master)](https://travis-ci.org/zeit/next.js)
 ## Usage
 **Clone the repo**
 ```
